@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+.env
+*.key
+*.crt
+.gitignore
+*.txt
+*.md
+LICENSE
