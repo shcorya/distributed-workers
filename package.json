@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/shcorya/distributed-workers#readme",
   "dependencies": {
-    "beanstalkd-worker": "^1.3.1",
-    "node-beanstalk": "^1.6.8"
+    "jackd": "^4.0.8"
   }
 }
