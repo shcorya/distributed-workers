@@ -8,9 +8,38 @@
 */
 
 import http from 'node:http';
+import querystring from "node:querystring";
+import Jackd from "jackd";
+
+// initalize the beanstalk client
+const beanstalk = new Jackd();
 
 // create a server to ingest API requests
 http.createServer(function (req, res) {
+    // respond to different HTTP verbs
+    switch (req.method) {
+
+        // get the details of a current job
+        case 'GET':
+            // this should first check the beanstalk client
+            // if its not in the beanstalk queue, then check mongo
+            console.log('got request');
+            break;
+
+        // create a new job
+        case 'POST':
+            // read post data as buffer
+            const chunks = [];
+            req.on('data', chunk => {
+                chunks.push(chunk);
+            });
+            // reached end of post data
+            req.on('end', () => {
+                // do stuff with the data (in this case, use it as a payload)
+                const payload = JSON.parse(chunks);
+            });
+            break;
+    }
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(req.url);
     res.end();
