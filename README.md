@@ -6,9 +6,12 @@ For demonstration purposes, the worker simply generates a timestamp and stores i
 The system can be deployed on Docker Swarm to provide an easy, straightforward means of spawning additional worker processes.
 Docker Swarm provides an easy-to-use means of deploying highly available applicationsm; Docker Compose files are used to deploy collections of services called "stacks".
 
+The system includes a manager that handles API requests, and a worker that runs jobs deployed through this API. These two processes communicate through the beanstalk
+protocol. Each job includes an ID and a payload.
+
 ## Utilites
 - [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management to deploy distributed applications.
-- [Coolbeans](https://github.com/1xyz/coolbeans) "is a distributed work queue that implements the beanstalkd protocol."
+- [Coolbeans](https://github.com/shcorya/coolbeans) "is a distributed work queue that implements the beanstalkd protocol."
   - Beanstalk is a work queue protocol that is used, in this case, to decouple the addition and processing of jobs.
   - Coolbeans utilizes RAFT consensus for high availability, which beanstalkd does not provide.
 - [jackd](https://github.com/divmgl/jackd) is a beanstalk client that supports Node.JS
