@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/shcorya/distributed-workers#readme",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "jackd": "^4.0.8",
     "mongodb": "^6.17.0"
   }

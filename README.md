@@ -18,3 +18,4 @@ protocol. Each job includes an ID and a payload.
 - [MongoDB](https://github.com/mongodb/mongo) a NoSQL database that will be used to store job outputs.
 - [Caddy](https://github.com/caddyserver/caddy) (with a [reverse proxy plugin](https://github.com/lucaslorentz/caddy-docker-proxy)) is used to secure monitoring apps.
 - [Prometheus](https://github.com/prometheus/prometheus) will be used to collect metrics throughout the system and provide a simple interface for querying metrics.
+- [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables.
