@@ -1,6 +1,7 @@
 "use strict";
 
-console.debug("worker module loaded");
+// load .env file into process.env
+import "dotenv/config";
 
 import Jackd from "jackd";
 import crypto from "node:crypto";

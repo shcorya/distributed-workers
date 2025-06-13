@@ -7,6 +7,9 @@
       for more control without the need to load middlewares and/or other modules.
 */
 
+// load .env file into process.env
+import "dotenv/config";
+
 import http from 'node:http';
 import querystring from "node:querystring";
 import Jackd from "jackd";
