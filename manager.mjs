@@ -54,7 +54,7 @@ http.createServer(function (req, res) {
     res.end();
 })
 // start the server
-.listen(8080)
+.listen(process.env.MANAGER_LISTEN_PORT || 8080)
 // acknowledge that the server has started
 .on('listening', () => {
     console.info('http server started');
