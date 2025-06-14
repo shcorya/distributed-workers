@@ -17,7 +17,7 @@ const beanstalk = new Jackd({
 await beanstalk.connect();
 
 // initialize the mongodb client, database, and collection
-const mongo = new MongoClient('mongodb://localhost:27017');
+const mongo = new MongoClient(process.env.MONGO_URL || 'mongodb://localhost:27017');
 await mongo.connect();
 const db = mongo.db('jobs');
 const completed = db.collection('completed');
