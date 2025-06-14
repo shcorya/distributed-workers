@@ -50,7 +50,7 @@ http.createServer(async function (req, res) {
                 const jobStats = await beanstalk.statsJob(id);
                 // return the job stats to the http client
                 res.writeHead(200, {'Content-Type': 'application/json'});
-                res.write(JSON.stringify(jobStats));
+                res.write(`${JSON.stringify(jobStats)}\r\n`);
                 res.end();
             } catch (error) {
                 // if the id is not found in beanstalk
@@ -61,19 +61,19 @@ http.createServer(async function (req, res) {
                     if (jobResult) {
                          // write the result to the http response
                         res.writeHead(200, {'Content-Type': 'application/json'});
-                        res.write(JSON.stringify(jobResult));
+                        res.write(`${JSON.stringify(jobResult)}\r\n`);
                         res.end();
                     } else {
                         // job was not found in beanstalk or mongo, return 404
                         res.writeHead(404, {'Content-Type': 'text/html'});
-                        res.write(`404, job' ${id} 'not found`);
+                        res.write(`404, job' ${id} 'not found\r\n`);
                         res.end();
                     }
                 } else {
                     // unhandled error, return code 500 (internal server error)
                     res.writeHead(500, {'Content-Type': 'text/html'});
                     // return helpful message to http client
-                    res.write(`internal server error, job ${id} returned ${codeerror.code}`);
+                    res.write(`internal server error, job ${id} returned ${codeerror.code}\r\n`);
                     res.end();
                 }
             }
