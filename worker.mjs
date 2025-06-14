@@ -8,7 +8,13 @@ import crypto from "node:crypto";
 import { MongoClient } from "mongodb";
 
 // initalize the beanstalk client
-const beanstalk = new Jackd();
+const beanstalk = new Jackd({
+    autoconnect: false,
+    host: process.env.BEANSTALK_HOST || 'localhost',
+    port: Number.parseInt(process.env.BEANSTALK_PORT) || 11300,
+    maxReconnectAttempts: Number.parseInt(process.env.BEANSTALK_MAX_RECONNECT_ATTEMPTS) || 3
+});
+await beanstalk.connect();
 
 // initialize the mongodb client, database, and collection
 const mongo = new MongoClient('mongodb://localhost:27017');

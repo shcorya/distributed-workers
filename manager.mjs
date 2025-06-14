@@ -15,7 +15,13 @@ import querystring from "node:querystring";
 import Jackd from "jackd";
 
 // initalize the beanstalk client
-const beanstalk = new Jackd();
+const beanstalk = new Jackd({
+    autoconnect: false,
+    host: process.env.BEANSTALK_HOST || 'localhost',
+    port: Number.parseInt(process.env.BEANSTALK_PORT) || 11300,
+    maxReconnectAttempts: Number.parseInt(process.env.BEANSTALK_MAX_RECONNECT_ATTEMPTS) || 3
+});
+await beanstalk.connect();
 
 // create a server to ingest API requests
 http.createServer(function (req, res) {
