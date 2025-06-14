@@ -13,6 +13,7 @@ import 'dotenv/config';
 import http from 'node:http';
 import querystring from "node:querystring";
 import Jackd from "jackd";
+import { MongoClient } from "mongodb";
 
 // initalize the beanstalk client
 const beanstalk = new Jackd({
@@ -33,7 +34,7 @@ const completed = db.collection('completed');
 let id = undefined;
 
 // create a server to ingest API requests
-http.createServer(function (req, res) {
+http.createServer(async function (req, res) {
     // respond to different HTTP verbs
     switch (req.method) {
 
@@ -45,10 +46,10 @@ http.createServer(function (req, res) {
                 // extract the id as in integer from the url
                 // GET api.example.com/123 -> 123
                 id = Number.parseInt(req.url.split('/')[1]);
-                // check beanstalk
+                // check beanstalk for the job
                 const jobStats = await beanstalk.statsJob(id);
                 // return the job stats to the http client
-                res.writeHead(200, {'Content-Type': 'application/json');
+                res.writeHead(200, {'Content-Type': 'application/json'});
                 res.write(JSON.stringify(jobStats));
                 res.end();
             } catch (error) {
@@ -59,20 +60,20 @@ http.createServer(function (req, res) {
                     // check if the job was found in mongo, jobResult will be null if not found
                     if (jobResult) {
                          // write the result to the http response
-                        res.writeHead(200, {'Content-Type': 'application/json');
+                        res.writeHead(200, {'Content-Type': 'application/json'});
                         res.write(JSON.stringify(jobResult));
                         res.end();
                     } else {
                         // job was not found in beanstalk or mongo, return 404
                         res.writeHead(404, {'Content-Type': 'text/html'});
-                        res.write('404, job', id, 'not found');
+                        res.write(`404, job' ${id} 'not found`);
                         res.end();
                     }
                 } else {
                     // unhandled error, return code 500 (internal server error)
                     res.writeHead(500, {'Content-Type': 'text/html'});
                     // return helpful message to http client
-                    res.write('internal server error, job', id, 'returned code', error.code);
+                    res.write(`internal server error, job ${id} returned ${codeerror.code}`);
                     res.end();
                 }
             }
@@ -80,21 +81,27 @@ http.createServer(function (req, res) {
 
         // create a new job
         case 'POST':
+            // declare the payload variable, will be passed to beanstalk
+            let payload = undefined;
             // read post data as buffer
             const chunks = [];
             req.on('data', chunk => {
                 chunks.push(chunk);
             });
             // reached end of post data
-            req.on('end', () => {
+            req.on('end', async () => {
                 // do stuff with the data (in this case, use it as a payload)
-                const payload = JSON.parse(chunks);
+                payload = JSON.parse(chunks);
+                // add the JSON received from http POST request to beanstalk as a new job
+                id = await beanstalk.put(payload);
+                // return success to http client
+                res.writeHead(200, {'ContentType': 'text/html'});
+                // respond with a message including the new job's id
+                res.write('added job', id, 'to queue');
+                res.end();
             });
             break;
     }
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(req.url);
-    res.end();
 })
 // start the server
 .listen(process.env.MANAGER_LISTEN_PORT || 8080)
