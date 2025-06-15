@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Check Out Repository 
+        name: Check Out Repository
         uses: actions/checkout@v4
-      - 
+      -
         name: Docker Metadata
-        uses: metadata-action@v5
+        uses: docker/metadata-action@v5
         with:
           images: |
             scorya/distributed-workers
