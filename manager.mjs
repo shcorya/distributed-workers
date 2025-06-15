@@ -97,7 +97,7 @@ http.createServer(async function (req, res) {
                 // return success to http client
                 res.writeHead(200, {'ContentType': 'text/html'});
                 // respond with a message including the new job's id
-                res.write('added job', id, 'to queue');
+                res.write(`added job ${id} to queue\r\n`);
                 res.end();
             });
             break;
