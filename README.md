@@ -43,3 +43,12 @@ Start one or more workers:
 node worker.mjs
 ```
 
+Send an example job:
+```bash
+curl -X POST localhost:8080 -H "Content-Type: application/json" --data '{"example":"data"}'
+```
+
+After sending an example job with cURL, the job's ID will be printed to the console. This ID can then be used to query the job's status:
+```bash
+curl localhost:8080/1/
+```
