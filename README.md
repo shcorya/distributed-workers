@@ -40,5 +40,6 @@ node manager.mjs
 
 Start one or more workers:
 ```bash
-node manager.mjs
+node worker.mjs
 ```
+
