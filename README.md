@@ -19,3 +19,26 @@ protocol. Each job includes an ID and a payload.
 - [Caddy](https://github.com/caddyserver/caddy) (with a [reverse proxy plugin](https://github.com/lucaslorentz/caddy-docker-proxy)) is used to secure monitoring apps.
 - [Prometheus](https://github.com/prometheus/prometheus) will be used to collect metrics throughout the system and provide a simple interface for querying metrics.
 - [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables.
+
+## Setup
+A local setup for development or testing purposes can be created with Docker. Two containers (one for beanstalkd and one for MongoDB) can be run on a local machine.
+
+To run beanstalkd:
+```bash
+docker run -it --rm -p 127.0.0.1:11300:11300 rayyounghong/beanstalkd -V
+```
+
+To run MongoDB:
+```bash
+docker run -it --rm -p 127.0.0.1:27017:27017 mongo
+```
+
+Start the manager:
+```bash
+node manager.mjs
+```
+
+Start one or more workers:
+```bash
+node manager.mjs
+```
