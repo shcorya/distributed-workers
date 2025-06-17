@@ -73,7 +73,7 @@ http.createServer(async function (req, res) {
                     // unhandled error, return code 500 (internal server error)
                     res.writeHead(500, {'Content-Type': 'text/html'});
                     // return helpful message to http client
-                    res.write(`internal server error, job ${id} returned ${codeerror.code}\r\n`);
+                    res.write(`internal server error, job ${id} returned ${error.code}\r\n`);
                     res.end();
                 }
             }
