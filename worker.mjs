@@ -32,6 +32,12 @@ async function work() {
         // get a job from the beanstalk queue
         const { id, payload } = await beanstalk.reserve();
 
+        // get a timestamp at the start of the job processing
+        const startTime = Date.now();
+
+        // print id to console for debugging
+        console.debug('processing job', id);
+
         // hash the job's payload
         const hash = crypto.createHash('md5').update(JSON.stringify(payload)).digest('hex');
 
@@ -43,6 +49,9 @@ async function work() {
 
         // delete the job (by its id) from the queue when it is done and added to mongodb
         await beanstalk.delete(id);
+
+        // print the time elapsed since the job started to the console
+        console.debug('successfully processed job', id, 'in', (Date.now() - startTime) / 1000, 'seconds');
 
     }
 }
