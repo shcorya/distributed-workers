@@ -66,7 +66,7 @@ http.createServer(async function (req, res) {
                     } else {
                         // job was not found in beanstalk or mongo, return 404
                         res.writeHead(404, {'Content-Type': 'text/html'});
-                        res.write(`404, job' ${id} 'not found\r\n`);
+                        res.write(`404, job ${id} not found\r\n`);
                         res.end();
                     }
                 } else {
