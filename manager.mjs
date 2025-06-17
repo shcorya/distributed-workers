@@ -91,7 +91,18 @@ http.createServer(async function (req, res) {
             // reached end of post data
             req.on('end', async () => {
                 // do stuff with the data (in this case, use it as a payload)
-                payload = JSON.parse(chunks);
+                try {
+                    // try parsing the payload as JSON
+                    payload = JSON.parse(chunks);
+                // if the payload is not valid JSON
+                } catch (error) {
+                    // error 400 -> bad request
+                    response.writeHead(400, {'ContentType': 'text/html'});
+                    response.write(`received data is not valid JSON\r\n`);
+                    res.end();
+                    // exit execution of this function after a bad request
+                    return 400;
+                }
                 // add the JSON received from http POST request to beanstalk as a new job
                 id = await beanstalk.put(payload);
                 // return success to http client
