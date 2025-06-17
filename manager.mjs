@@ -116,7 +116,7 @@ http.createServer(async function (req, res) {
         default:
             // http 405 -> method not allowed
             response.writeHead(405, {'ContentType': 'text/html'});
-            response.write(`method ${req.method} is not allowed`);
+            response.write(`method ${req.method} is not allowed\r\n`);
             res.end();
     }
 })
