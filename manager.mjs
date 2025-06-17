@@ -112,6 +112,12 @@ http.createServer(async function (req, res) {
                 res.end();
             });
             break;
+        // received http verb is neither GET or POST
+        default:
+            // http 405 -> method not allowed
+            response.writeHead(405, {'ContentType': 'text/html'});
+            response.write(`method ${req.method} is not allowed`);
+            res.end();
     }
 })
 // start the server
