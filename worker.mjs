@@ -38,7 +38,7 @@ async function work() {
         // print id to console for debugging
         console.debug('processing job', id);
 
-        // hash the job's payload
+        // hash the job's payload to simulate work
         const hash = crypto.createHash('md5').update(JSON.stringify(payload)).digest('hex');
 
         // delay up to 5 seconds to simulate a long-running job
