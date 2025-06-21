@@ -11,13 +11,9 @@ protocol. Each job includes an ID and a payload.
 
 ## Utilites
 - [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management to deploy distributed applications.
-- [Coolbeans](https://github.com/shcorya/coolbeans) "is a distributed work queue that implements the beanstalkd protocol."
-  - Beanstalk is a work queue protocol that is used, in this case, to decouple the addition and processing of jobs.
-  - Coolbeans utilizes RAFT consensus for high availability, which beanstalkd does not provide.
+- [beanstalkd](https://beanstalkd.github.io/) is a job/worker queue.
 - [jackd](https://github.com/divmgl/jackd) is a beanstalk client that supports Node.JS
 - [MongoDB](https://github.com/mongodb/mongo) a NoSQL database that will be used to store job outputs.
-- [Caddy](https://github.com/caddyserver/caddy) (with a [reverse proxy plugin](https://github.com/lucaslorentz/caddy-docker-proxy)) is used to secure monitoring apps.
-- [Prometheus](https://github.com/prometheus/prometheus) will be used to collect metrics throughout the system and provide a simple interface for querying metrics.
 - [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables.
 
 ## Setup
@@ -52,3 +48,6 @@ After sending an example job with cURL, the job's ID will be printed to the cons
 ```bash
 curl localhost:8080/1/
 ```
+
+## Deployment
+Easy scaling can be used in a production environment with Docker Swarm.
