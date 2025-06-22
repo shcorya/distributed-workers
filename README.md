@@ -16,8 +16,9 @@ protocol. Each job includes an ID and a payload.
 - [MongoDB](https://github.com/mongodb/mongo) a NoSQL database that will be used to store job outputs.
 - [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables.
 
-## Setup
+## Local Setup
 A local setup for development or testing purposes can be created with Docker. Two containers (one for beanstalkd and one for MongoDB) can be run on a local machine.
+Each of the below commands can be run in its own terminal tab/window for the sake of ease. Basic scaling can be achieved by running more than one worker process.
 
 To run beanstalkd:
 ```bash
@@ -50,4 +51,57 @@ curl localhost:8080/1/
 ```
 
 ## Deployment
-Easy scaling can be used in a production environment with Docker Swarm.
+Easy scaling can be used in a production environment with Docker Swarm. In ordr to use Docker Swawm effectively, at least three Linux servers are required.
+These can be either virtual or dedicated, and various Linux distributions can be used. Alias records should be pointed to each of the servers, and local hostnames
+should match these DNS entries.
+
+### Serer Setup
+Docker Swarm distinguishes two types of servers: managers and workers. This nomenclature should not be confused with the usage of "managers" and "workers"
+used in this projectm, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
+project add jobs to the queue. Managers in a Docker Swarm are also workers.
+
+For this demo, we will use a single manager and two workers: `manager.edge-demo.site`, `worker-1.edge-demo.site` and `worker-2.edge-demo.site`.
+ 
+To get up and running, install Docker on each of the servers via SSH:
+```bash
+curl -s https://get.docker.com | bash
+```
+
+#### Manage Node
+In our setup, the Docker Swarm manager will be the only stateful node. It will be used to coordinate the swarm workers in addition to holding both the beastalkd
+queue and MongoDB data.
+
+One the manager node, initalize the swarm:
+```bash
+docker swarm init
+```
+
+The output will look like this:
+```
+Swarm initialized: current node (bvz81updecsj6wjz393c09vti) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-3pu6hszjas19xyp7ghgosyx9k8atbfcr8p2is99znpy26u2lkl-1awxwuwd3z9j1z3puu7rcgdbx 172.17.0.2:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+```
+
+#### Worker Nodes
+
+
+### Controlling the Swarm
+Managemnt of a Docker Swarm must (naturally) occur on a manager node, so log back in to the manager via SSH.
+
+To check the setup of the swarm, run:
+```bash
+docker node ls
+```
+
+With one manager and two workers, the output should resemble the following:
+```
+ID                            HOSTNAME                  STATUS  AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+aZohnao5Eem2vafaeTh1ohgh5 *   manager.edge-demo.site    Ready   Active         Leader           25.0.3
+saeSh9chue6aoqu1ahv3Mah1t     worker-1.edge-demo.site   Ready   Active                          25.0.3
+Zoowou7een6aey9eici6Vaiz9     worker-2.edge-demo.site   Ready   Active                          25.0.3
+```
