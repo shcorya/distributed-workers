@@ -1,7 +1,7 @@
 # An Example Distributed System
 This project implements a distributed, horizontally scalable distributed system.
 Users can send jobs to a RESTful API, and these jobs are inturn run on one or more workers.
-For demonstration purposes, the worker simply generates a timestamp and stores it in MongoDB, representing a completed job.
+For demonstration purposes, the worker simply hashes the job's JSON payload and stores it in MongoDB, representing a completed job.
 
 The system can be deployed on Docker Swarm to provide an easy, straightforward means of spawning additional worker processes.
 Docker Swarm provides an easy-to-use means of deploying highly available applicationsm; Docker Compose files are used to deploy collections of services called "stacks".
