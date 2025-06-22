@@ -88,7 +88,7 @@ To add a manager to this swarm, run 'docker swarm join-token manager' and follow
 ```
 
 #### Worker Nodes
-The output of `docker swarm init` provides rudimentary instructions on joining a worker to the swarm; run this command on each worker:
+The output of `docker swarm init` provides rudimentary instructions on joining a worker to the swarm; run this command on each worker to populate the swarm:
 ```bash
 docker swarm join --token SWMTKN-1-3pu6hszjas19xyp7ghgosyx9k8atbfcr8p2is99znpy26u2lkl-1awxwuwd3z9j1z3puu7rcgdbx 172.17.0.2:2377
 ```
