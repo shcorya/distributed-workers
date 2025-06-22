@@ -67,7 +67,7 @@ To get up and running, install Docker on each of the servers via SSH:
 curl -s https://get.docker.com | bash
 ```
 
-#### Manage Node
+#### Manager Node
 In our setup, the Docker Swarm manager will be the only stateful node. It will be used to coordinate the swarm workers in addition to holding both the beastalkd
 queue and MongoDB data.
 
