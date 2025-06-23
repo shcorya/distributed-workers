@@ -1,7 +1,9 @@
 # An Example Distributed System
 This project implements a distributed, horizontally scalable distributed system.
-Users can send jobs to a RESTful API, and these jobs are inturn run on one or more workers.
+Users can send jobs to a RESTful API (`manager.mjs`), and these jobs are inturn run on one or more workers (`worker.mjs`).
 For demonstration purposes, the worker simply hashes the job's JSON payload and stores it in MongoDB, representing a completed job.
+When pulling the status of a job, `manager.mjs` will first check beanstalkd for the jobs status. If the job is not found in the queue, `manager.mjs` will then
+check MongoDB for a completed job, and it will return an appropriate HTML code and message depending on the job's presence in the database.
 
 The system can be deployed on Docker Swarm to provide an easy, straightforward means of spawning additional worker processes.
 Docker Swarm provides an easy-to-use means of deploying highly available applicationsm; Docker Compose files are used to deploy collections of services called "stacks".
@@ -48,6 +50,16 @@ curl -X POST localhost:8080 -H "Content-Type: application/json" --data '{"exampl
 After sending an example job with cURL, the job's ID will be printed to the console. This ID can then be used to query the job's status:
 ```bash
 curl localhost:8080/1/
+```
+
+If the job is waiting in the queue or in progress, the response to the GET request will reflect the details from beanstalkd, e.g.:
+```json
+{"id":1,"tube":"default","state":"reserved","pri":0,"age":0,"delay":0,"ttr":60,"timeLeft":59,"file":0,"reserves":1,"timeouts":0,"releases":0,"buries":0,"kicks":0}
+```
+
+If the job is complete, the response will be fetched from MongoDB, e.g.:
+```json
+{"_id":1,"hash":"09ee943c4fa33cd5a355eb7a4e38f7ef","payload":"{\"example\":\"data\"}"}
 ```
 
 ## Deployment
