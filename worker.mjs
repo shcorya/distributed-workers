@@ -27,7 +27,7 @@ work();
 
 async function work() {
     // indicate that the worker has started
-    cosole.info('worker started');
+    console.info('worker started');
     console.debug('watching for jobs...');
 
     // run in a loop
