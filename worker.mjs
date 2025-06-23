@@ -42,8 +42,8 @@ async function work() {
         // hash the job's payload to simulate work
         const hash = crypto.createHash('md5').update(JSON.stringify(payload)).digest('hex');
 
-        // delay up to 5 seconds to simulate a long-running job
-        await sleep(Math.floor(Math.random() * 5000));
+        // delay between 1 and 5 seconds to simulate a long-running job
+        await sleep(1000 + Math.floor(Math.random() * 4000));
 
         // add the completed job to mongodb by its beanstalk id
         await completed.insertOne({_id: id, hash, payload});
