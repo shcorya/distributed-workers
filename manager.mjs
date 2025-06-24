@@ -49,7 +49,12 @@ http.createServer(async function (req, res) {
                 // check beanstalk for the job
                 const jobStats = await beanstalk.statsJob(id);
                 // return the job stats to the http client
-                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.writeHead(200, {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                });
                 res.write(`${JSON.stringify(jobStats)}\r\n`);
                 res.end();
             } catch (error) {
@@ -60,18 +65,33 @@ http.createServer(async function (req, res) {
                     // check if the job was found in mongo, jobResult will be null if not found
                     if (jobResult) {
                          // write the result to the http response
-                        res.writeHead(200, {'Content-Type': 'application/json'});
+                        res.writeHead(200, {
+                            'Content-Type': 'application/json',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0'
+                        });
                         res.write(`${JSON.stringify(jobResult)}\r\n`);
                         res.end();
                     } else {
                         // job was not found in beanstalk or mongo, return 404
-                        res.writeHead(404, {'Content-Type': 'text/html'});
+                        res.writeHead(404, {
+                            'Content-Type': 'text/html',
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0'
+                         });
                         res.write(`404, job ${id} not found\r\n`);
                         res.end();
                     }
                 } else {
                     // unhandled error, return code 500 (internal server error)
-                    res.writeHead(500, {'Content-Type': 'text/html'});
+                    res.writeHead(500, {
+                        'Content-Type': 'text/html',
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
+                    });
                     // return helpful message to http client
                     res.write(`internal server error, job ${id} returned ${error.code}\r\n`);
                     res.end();
