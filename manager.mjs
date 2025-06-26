@@ -19,8 +19,7 @@ import { MongoClient } from "mongodb";
 const beanstalk = new Jackd({
     autoconnect: false,
     host: process.env.BEANSTALK_HOST || '127.0.0.1',
-    port: Number.parseInt(process.env.BEANSTALK_PORT) || 11300,
-    maxReconnectAttempts: Number.parseInt(process.env.BEANSTALK_MAX_RECONNECT_ATTEMPTS) || 3
+    port: Number.parseInt(process.env.BEANSTALK_PORT) || 11300
 });
 await beanstalk.connect();
 
