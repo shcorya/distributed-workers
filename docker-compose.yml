@@ -1,0 +1,92 @@
+# these connections are shared by manager.mjs and worker.mjs
+x-connections: &connections
+  BEANSTALK_HOST: queue
+  MONGO_URL: "mongodb://database:27017"
+
+services:
+
+  # the beanstalkd queue service
+  # -V enables basic console logging
+  # -b sets the persistence directory
+  # -f sets the milliseconds between disk writes,
+  #   -f 0 saves to disk immediately upon job receipt
+  queue:
+    image: rayyounghong/beanstalkd
+    command: -V -b /var/lib/beanstalkd -f 0
+    networks:
+      - internal
+    volumes:
+      - beanstalkd:/var/lib/beanstalkd
+    deploy:
+      placement:
+        constraints:
+          - "node.role == manager"
+
+  # the MongoDB instance where completed jobs are saved
+  database:
+    image: mongo
+    networks:
+      - internal
+    volumes:
+      - mongo:/data
+    deploy:
+      placement:
+        constraints:
+          - "node.role == manager"
+
+  manager:
+    image: scorya/distributed-workers:development
+    command: manager
+    networks:
+      - internal
+    ports:
+      - "8080:8080"
+    environment:
+      <<: *connections
+
+  worker:
+    image: scorya/distributed-workers:development
+    command: worker
+    networks:
+      - internal
+    environment:
+      <<: *connections
+    deploy:
+      mode: replicated
+      replicas: 3 # <- adjust this to scale the number of workers
+
+  # web-based visualization of the completed jobs database
+  mongo-express:
+    image: mongo-express
+    networks:
+      - internal
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: database
+
+  # web-based visualization of the state of the beanstalkd queue
+  beanstalkd-console:
+    image: scorya/beanstalkd-console
+    networks:
+      - internal
+    ports:
+      - "8082:80"
+    environment:
+      BEANSTALKD_HOST: queue
+      BEANSTALKD_PORT: "11300"
+
+# the overlay network used for interprocess connections
+networks:
+  internal:
+    attachable: false
+    driver: overlay
+    driver_opts:
+      encrypted: "true"
+
+# declaration of persistent volumes
+volumes:
+  mongo:
+    driver: local
+  beanstalkd:
+    driver: local
