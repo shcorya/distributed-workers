@@ -211,3 +211,10 @@ Conversely, beanstalk is a simple protocol created specifically for queues. It h
 
 ### NoSQL vs SQL
 Since the worker module returns a JSON object, it can be more easily stored in MongoDB than a SQL database. The ID of the beanstalk job as well as the _id of each MongoDB objects are both native JavaScript integers.
+
+## Next Steps
+1. Add two more manager nodes to Docker Swarm
+2. Create a replica set for MongoDB
+3. Use HAProxy so that all requests go to the replica set leader
+4. Use Caddy as a reverse proxy, storing certificates in MongoDB
+5. Highly available beanstalk queue
