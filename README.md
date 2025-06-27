@@ -165,6 +165,7 @@ This limitation can be addressed by using [Caddy](https://github.com/caddyserver
 Caddy could also be used to require authentication for API calls that create jobs.
 
 Caddy automatically gets SSL certificates, and these can be stored in a highly available MongDB/HAProxy setup using a custom compilation of Caddy with [this plugin](https://github.com/root-sector/caddy-storage-mongodb).
+Running Caddy as a reverse proxy would require setting additional DNS records, among other things, thus it is omitted for simplicity.
 
 ### Beanstalk vs. Bull vs. BullMQ
 Bull does not provide a means of separating worker processes as its own module; worker processes must be called from the processes that enqueues the jobs, therefore the processes cannot be completely segregated.
