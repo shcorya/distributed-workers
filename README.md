@@ -12,6 +12,9 @@ Docker Swarm provides an easy-to-use means of deploying highly available applica
 The system includes a manager that handles API requests, and a worker that runs jobs deployed through this API. These two processes communicate through the beanstalk
 protocol. Each job includes an ID and a payload.
 
+## Flow
+![diagram](./assets/edge-demo.png)
+
 ## Utilites
 - [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management to deploy distributed applications.
 - [beanstalkd](https://beanstalkd.github.io/) is a job/worker queue.
