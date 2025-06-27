@@ -72,7 +72,7 @@ Docker Swarm distinguishes two types of servers: managers and workers. This nome
 used in this project, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
 project add jobs to the queue. Managers in a Docker Swarm are also workers.
 
-For this demo, we will use a single manager and two workers: `manager.edge-demo.site`, `worker-1.edge-demo.site` and `worker-2.edge-demo.site`.
+For this demo, we will use a single manager and two workers: `manager.edge-demo.site`, `worker-1.edge-demo.site` and `worker-2.edge-demo.site`. These nodes can be Edge Compute units.
  
 To get up and running, install Docker on each of the servers via SSH:
 ```bash
