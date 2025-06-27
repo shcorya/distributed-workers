@@ -119,8 +119,6 @@ http.createServer(async function (req, res) {
                     // print to console
                     console.debug('bad request (invalid JSON payload)');
                     // respond to HTTP client
-                    response.writeHead(400, {'ContentType': 'text/html'});
-                    response.write(`received data is not valid JSON\r\n`);
                     res.end();
                     // exit execution of this function after a bad request
                     return 400;
