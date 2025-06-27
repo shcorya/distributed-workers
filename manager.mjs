@@ -39,6 +39,8 @@ http.createServer(async function (req, res) {
 
         // get the details of a job
         case 'GET':
+            // log request to stdout
+            console.debug('received GET request at path', req.url);
             // this should first check the beanstalk client
             // if its not in the beanstalk queue, then check mongo
             try {
@@ -47,6 +49,8 @@ http.createServer(async function (req, res) {
                 id = Number.parseInt(req.url.split('/')[1]);
                 // check beanstalk for the job
                 const jobStats = await beanstalk.statsJob(id);
+                // print to console in addition to returning HTTP
+                console.debug('returning stats for job', id, '...');
                 // return the job stats to the http client
                 res.writeHead(200, {
                     'Content-Type': 'application/json',
@@ -63,7 +67,9 @@ http.createServer(async function (req, res) {
                     const jobResult = await completed.findOne({_id: id});
                     // check if the job was found in mongo, jobResult will be null if not found
                     if (jobResult) {
-                         // write the result to the http response
+                        // print to console in addition to returning HTTP
+                        console.debug('returning job result for job', id, '...');
+                        // write the result to the http response
                         res.writeHead(200, {
                             'Content-Type': 'application/json',
                             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -73,6 +79,8 @@ http.createServer(async function (req, res) {
                         res.write(`${JSON.stringify(jobResult)}\r\n`);
                         res.end();
                     } else {
+                        // print to console in addition to returning HTTP
+                        console.debug('job', id, 'not found');
                         // job was not found in beanstalk or mongo, return 404
                         res.writeHead(404, {
                             'Content-Type': 'text/html',
@@ -85,13 +93,16 @@ http.createServer(async function (req, res) {
                     }
                 } else {
                     // unhandled error, return code 500 (internal server error)
+                    // print to console
+                    console.log('internal server error');
+                    // return HTTP
                     res.writeHead(500, {
                         'Content-Type': 'text/html',
                         'Cache-Control': 'no-cache, no-store, must-revalidate',
                         'Pragma': 'no-cache',
                         'Expires': '0'
                     });
-                    // return helpful message to http client
+                    // return helpful message to HTTP client
                     res.write(`internal server error, job ${id} returned ${error.code}\r\n`);
                     res.end();
                 }
@@ -100,6 +111,8 @@ http.createServer(async function (req, res) {
 
         // create a new job
         case 'POST':
+            // log request to stdout
+            console.debug('received POST request at path', req.url);
             // declare the payload variable, will be passed to beanstalk
             let payload = undefined;
             // read post data as buffer
@@ -113,9 +126,14 @@ http.createServer(async function (req, res) {
                 try {
                     // try parsing the payload as JSON
                     payload = JSON.parse(chunks);
+                    // print the payload to the console
+                    console.debug('received new job with payload', payload);
                 // if the payload is not valid JSON
                 } catch (error) {
                     // error 400 -> bad request
+                    // print to console
+                    console.debug('bad request (invalid JSON payload)');
+                    // respond to HTTP client
                     response.writeHead(400, {'ContentType': 'text/html'});
                     response.write(`received data is not valid JSON\r\n`);
                     res.end();
@@ -129,11 +147,16 @@ http.createServer(async function (req, res) {
                 // respond with a message including the new job's id
                 res.write(`added job ${id} to queue\r\n`);
                 res.end();
+                // write the same message to the console
+                console.debug('added job', id, 'to queue');
             });
             break;
         // received http verb is neither GET or POST
         default:
             // http 405 -> method not allowed
+            // print to console
+            console.debug('method', req.method, 'not allowed');
+            // respond to HTTP client
             response.writeHead(405, {'ContentType': 'text/html'});
             response.write(`method ${req.method} is not allowed\r\n`);
             res.end();
