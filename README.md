@@ -70,6 +70,8 @@ Easy scaling can be used in a production environment with Docker Swarm. In ordr 
 These can be either virtual or dedicated, and various Linux distributions can be used. Alias records should be pointed to each of the servers, and local hostnames
 should match these DNS entries.
 
+*Note: The local setup described above does not include disk persistence. This is deliberate for the sake of easy debugging. The below setup includes disk persistence for both in-queue and completed jobs.*
+
 ### Serer Setup
 Docker Swarm distinguishes two types of servers: managers and workers. This nomenclature should not be confused with the usage of "managers" and "workers"
 used in this project, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
