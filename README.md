@@ -175,10 +175,12 @@ will add 128 jobs to the work queue.
 
 ### Visualizations
 Completed jobs can be viewed in Mongo Express at [manager.edge-demo.site:8081](http://manager.edge-demo.site:8081). The username is "admin" and the password is "pass".
+
 ![mongo-express](./assets/mongo-express-screenshot.png)
 
 Numbers related to in-process jobs (numbers ready, delayed, total, etc.) can be viewed in Beanstalk console at [manager.edge-demo.site:8082](http://manager.edge-demo.site:8082). Note that if the queue
 is full, the number of `current-jobs-reserved` is equal to the number of worker processes.
+
 ![beanstalk-console](./assets/beanstalk-console-screenshot.png)
 
 ## Trade-offs and Limitations
