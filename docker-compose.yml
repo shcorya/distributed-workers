@@ -3,6 +3,15 @@ x-connections: &connections
   BEANSTALK_HOST: queue
   MONGO_URL: "mongodb://database:27017"
 
+# restrict services to only run on the manager
+#   this allows for basic disk persistence
+#   because the service always loads the local volume
+x-manager-only: &manager-only
+  deploy:
+    placement:
+      constraints:
+        - "node.role == manager"
+
 services:
 
   # the beanstalkd queue service
@@ -17,10 +26,7 @@ services:
       - internal
     volumes:
       - beanstalkd:/var/lib/beanstalkd
-    deploy:
-      placement:
-        constraints:
-          - "node.role == manager"
+    <<: *manager-only
 
   # the MongoDB instance where completed jobs are saved
   database:
@@ -29,10 +35,7 @@ services:
       - internal
     volumes:
       - mongo:/data
-    deploy:
-      placement:
-        constraints:
-          - "node.role == manager"
+    <<: *manager-only
 
   # start the manager.mjs module
   manager:
