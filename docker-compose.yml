@@ -34,6 +34,7 @@ services:
         constraints:
           - "node.role == manager"
 
+  # start the manager.mjs module
   manager:
     image: scorya/distributed-workers:development
     command: manager
@@ -44,6 +45,7 @@ services:
     environment:
       <<: *connections
 
+  # start the worker.mjs module
   worker:
     image: scorya/distributed-workers:development
     command: worker
