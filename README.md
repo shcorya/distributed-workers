@@ -12,9 +12,6 @@ Docker Swarm provides an easy-to-use means of deploying highly available applica
 The system includes a manager that handles API requests, and a worker that runs jobs deployed through this API. These two processes communicate through the beanstalk
 protocol. Each job includes an ID and a payload.
 
-## Flow
-![diagram](./assets/edge-demo.png)
-
 ## Utilites
 - [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management to deploy distributed applications.
 - [beanstalkd](https://beanstalkd.github.io/) is a job/worker queue.
@@ -23,6 +20,15 @@ protocol. Each job includes an ID and a payload.
 - [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables.
 - [Mongo Express](https://github.com/mongo-express/mongo-express) provides a web-based visualization and administrative dashboard for MongoDB.
 - [Beanstalk console](https://github.com/ptrofimov/beanstalk_console) shows stats about the beanstalk queue.
+
+## Flow
+![diagram](./assets/edge-demo.png)
+
+## API
+- `POST` -> sending a post request to any endpoint with properly formed JSON as payload will add a job to the queue
+  - e.g. `curl -X POST localhost:8080 -H "Content-Type: application/json" --data '{"example":"data"}'`
+- `GET` -> sending a get request with the job's ID in its URL will return the status of the job
+  - e.g. `curl -X GET localhost:8080/1/` will return the status of job `1`
 
 ## Local Setup
 A local setup for development or testing purposes can be created with Docker. Two containers (one for beanstalkd and one for MongoDB) can be run on a local machine.
