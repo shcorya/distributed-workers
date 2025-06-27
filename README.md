@@ -18,6 +18,8 @@ protocol. Each job includes an ID and a payload.
 - [jackd](https://github.com/divmgl/jackd) is a beanstalk client that supports Node.JS
 - [MongoDB](https://github.com/mongodb/mongo) a NoSQL database that will be used to store job outputs.
 - [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables.
+- [Mongo Express](https://github.com/mongo-express/mongo-express)
+- [Beanstalk console](https://github.com/ptrofimov/beanstalk_console)
 
 ## Local Setup
 A local setup for development or testing purposes can be created with Docker. Two containers (one for beanstalkd and one for MongoDB) can be run on a local machine.
