@@ -1,7 +1,8 @@
 # An Example Distributed System
 This project implements a distributed, horizontally scalable distributed system.
-Users can send jobs to a RESTful API (`manager.mjs`), and these jobs are inturn run on one or more workers (`worker.mjs`).
+Users can send jobs to a RESTful API (implemented in `manager.mjs`), and these jobs are inturn run on one or more workers (implemented in `worker.mjs`).
 For demonstration purposes, the worker simply hashes the job's JSON payload and stores it in MongoDB, representing a completed job.
+
 When pulling the status of a job, `manager.mjs` will first check beanstalkd for the jobs status. If the job is not found in the queue, `manager.mjs` will then
 check MongoDB for a completed job, and it will return an appropriate HTML code and message depending on the job's presence in the database.
 
@@ -148,3 +149,29 @@ Deploy the stack:
 ```bash
 docker stack deploy -c ./docker-compose.yml -d demo
 ```
+
+## Trade-offs and Limitations
+
+### High Availability
+Beanstalkd is not highly available; however, its protocol is simple and can be implemented in a highly available way.
+Likewise, MongoDB is not not highly available in the setup outlined within this repository. MongoDB high availability can be achieved using a repilca set and HAProxy. 
+Adding Docker Swarm managers is simple and would provide highly available management of processes' states.
+
+### Security
+Inter-process communication is encrypted within Docker Swarm; however, for the sake of simplicity, API requests and visualizers are accessed through unencrypted HTTP.
+This limitation can be addressed by using [Caddy](https://github.com/caddyserver/caddy) as a reverse proxy, running all currently unencrypted communications through HTTPS.
+Caddy could also be used to require authentication for API calls that create jobs.
+
+Caddy automatically gets SSL certificates, and these can be stored in a highly available MongDB/HAProxy setup using a custom compilation of Caddy with [this plugin](https://github.com/root-sector/caddy-storage-mongodb).
+
+### Beanstalk vs. Bull vs. BullMQ
+Bull does not provide a means of separating worker processes as its own module; worker processes must be called from the processes that enqueues the jobs, therefore the processes cannot be completely segregated.
+BullMQ addresses this limitation, but both Bull and BullMQ are backed by redis. 
+
+While redis is well-tested and reliable, strongly-consistent, highly-available redis implementations are limited.
+Re-implementing every facet of redis used by Bull and BullMQ would be impractical.
+
+Conversely, beanstalk is a simple protocol created specifically for queues. It has been implemented in different languages, and at least one ([Coolbeans](https://github.com/1xyz/coolbeans)) uses RAFT for high availability.
+
+### NoSQL vs SQL
+Since the worker module returns a JSON object, it can be more easily stored in MongoDB than a SQL database. The ID of the beanstalk job as well as the _id of each MongoDB objects are both native JavaScript integers.
