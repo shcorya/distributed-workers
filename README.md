@@ -69,7 +69,7 @@ should match these DNS entries.
 
 ### Serer Setup
 Docker Swarm distinguishes two types of servers: managers and workers. This nomenclature should not be confused with the usage of "managers" and "workers"
-used in this projectm, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
+used in this project, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
 project add jobs to the queue. Managers in a Docker Swarm are also workers.
 
 For this demo, we will use a single manager and two workers: `manager.edge-demo.site`, `worker-1.edge-demo.site` and `worker-2.edge-demo.site`.
@@ -122,4 +122,29 @@ ID                            HOSTNAME                  STATUS  AVAILABILITY   M
 aZohnao5Eem2vafaeTh1ohgh5 *   manager.edge-demo.site    Ready   Active         Leader           25.0.3
 saeSh9chue6aoqu1ahv3Mah1t     worker-1.edge-demo.site   Ready   Active                          25.0.3
 Zoowou7een6aey9eici6Vaiz9     worker-2.edge-demo.site   Ready   Active                          25.0.3
+```
+
+### Running the Stack
+Still on the manager node, download the Docker Compose file:
+```bash
+curl -s https://raw.githubusercontent.com/shcorya/distributed-workers/refs/heads/master/docker-compose.yml > docker-compose.yml
+```
+
+Note that the number of worker processes can be easily adjusted. The default is three.
+```yaml
+  worker:
+    image: scorya/distributed-workers:development
+    command: worker
+    networks:
+      - internal
+    environment:
+      <<: *connections
+    deploy:
+      mode: replicated
+      replicas: 3 # <- adjust this to scale the number of workers
+```
+
+Deploy the stack:
+```bash
+docker stack deploy -c ./docker-compose.yml -d demo
 ```
