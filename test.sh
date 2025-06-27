@@ -5,5 +5,6 @@
 
 for ((i = 1; i <= $2; i++ ));
 do
-  curl -X POST $1 -H "Content-Type: application/json" --data '{"example":"data"}'
+  VAR=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+  curl -X POST $1 -H "Content-Type: application/json" --data '{"example":"'"$VAR"'"}'
 done
