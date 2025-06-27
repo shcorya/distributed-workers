@@ -218,3 +218,7 @@ Since the worker module returns a JSON object, it can be more easily stored in M
 3. Use HAProxy so that all requests go to the replica set leader
 4. Use Caddy as a reverse proxy, storing certificates in MongoDB
 5. Highly available beanstalk queue
+
+## Appendix
+- When running the deployment in Docker Swarm, `manager.mjs` can be scaled in addition to `worker.mjs`. Since `manager.mjs` requires an open port, it can only scale to the number of nodes in the swarm.
+- With [Coolbeans](https://github.com/1xyz/coolbeans), HAProxy + MongoDB, and two more Docker Swarm manager nodes, the entire system would have no single point-of-failure. (Caddy can be configured with Docker Swarm labels.)
