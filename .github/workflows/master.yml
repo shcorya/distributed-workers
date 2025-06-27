@@ -19,10 +19,7 @@ jobs:
         name: Docker Metadata
         uses: docker/metadata-action@v5
         with:
-          images: |
-            scorya/distributed-workers
-          tags: |
-            type=ref,event=branch
+          images: scorya/distributed-workers
       -
         name: Login to DockerHub
         uses: docker/login-action@v3
