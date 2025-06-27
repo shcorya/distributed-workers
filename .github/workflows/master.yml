@@ -2,8 +2,6 @@ name: Master Branch CI/CD
 
 on:
   push:
-    branches:
-      - 'master'
     tags:
       - 'v*'
   workflow_dispatch:
