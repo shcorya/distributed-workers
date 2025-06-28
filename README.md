@@ -164,7 +164,8 @@ docker stack deploy -c ./docker-compose.yml -d demo
 ```
 
 ## Demo
-A public-facing demo is set up at `manager.edge-demo.site`. The RESTful API runs on port `8080`, Mongo Express runs on port `8081`, and a web-based beanstalk dashboard runs on port `8082`
+A public-facing demo is set up at `manager.edge-demo.site`.
+The RESTful API runs on port `8080`, Mongo Express runs on port `8081`, and a web-based beanstalk dashboard runs on port `8082`.
 
 ### Usage
 The provided `test.sh` script can be used to add jobs to the queue in bulk. For example, this command
@@ -213,11 +214,12 @@ Conversely, beanstalk is a simple protocol created specifically for queues. It h
 Since the worker module returns a JSON object, it can be more easily stored in MongoDB than a SQL database. The ID of the beanstalk job as well as the _id of each MongoDB objects are both native JavaScript integers.
 
 ## Next Steps
-1. Add two more manager nodes to Docker Swarm
-2. Create a replica set for MongoDB
-3. Use HAProxy so that all requests go to the replica set leader
-4. Use Caddy as a reverse proxy, storing certificates in MongoDB
-5. Highly available beanstalk queue
+1. Fix Master Branch CI/CD
+2. Add two more manager nodes to Docker Swarm
+3. Create a replica set for MongoDB
+4. Use HAProxy so that all requests go to the replica set leader
+5. Use Caddy as a reverse proxy, storing certificates in MongoDB
+6. Highly available beanstalk queue
 
 ## Appendix
 - When running the deployment in Docker Swarm, `manager.mjs` can be scaled in addition to `worker.mjs`. Since `manager.mjs` requires an open port, it can only scale to the number of nodes in the swarm.
