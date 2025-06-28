@@ -1,25 +1,29 @@
 # An Example Distributed System
 This project implements a distributed, horizontally scalable distributed system.
-Users can send jobs to a RESTful API (implemented in `manager.mjs`), and these jobs are inturn run on one or more workers (implemented in `worker.mjs`).
+Users can send jobs to a RESTful API (implemented by the HTTP in `manager.mjs`), and these jobs are inturn run on one or more workers (implemented in `worker.mjs`).
 For demonstration purposes, the worker simply hashes the job's JSON payload and stores it in MongoDB, representing a completed job.
+The manager and worker processes communicate indirectly through beanstalkd.
 
-When pulling the status of a job, `manager.mjs` will first check beanstalkd for the jobs status. If the job is not found in the queue, `manager.mjs` will then
-check MongoDB for a completed job, and it will return an appropriate HTML code and message depending on the job's presence in the database.
+When pulling the status of a job from a `GET` request, `manager.mjs` will first check beanstalkd for the jobs status. If the job is not found in the queue,
+`manager.mjs` will then check MongoDB for a completed job, and it will return an appropriate HTTP code and message depending on the job's presence in the database.
 
 The system can be deployed on Docker Swarm to provide an easy, straightforward means of spawning additional worker processes.
-Docker Swarm provides an easy-to-use means of deploying highly available applicationsm; Docker Compose files are used to deploy collections of services called "stacks".
-
-The system includes a manager that handles API requests, and a worker that runs jobs deployed through this API. These two processes communicate through the beanstalk
-protocol. Each job includes an ID and a payload.
+Docker Swarm provides an easy-to-use means of deploying highly available applications;
+Docker Compose files are used to deploy collections of services called "stacks".
 
 ## Utilites
-- [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management to deploy distributed applications.
+- [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management to deploy distributed applications. It allows for easy horizontal scaling
+with the addition of compute hardware as well as easy scaling for the number of `worker.mjs` processes.
 - [beanstalkd](https://beanstalkd.github.io/) is a job/worker queue.
-- [jackd](https://github.com/divmgl/jackd) is a beanstalk client that supports Node.JS
+- [jackd](https://github.com/divmgl/jackd) is a beanstalk client that supports Node.JS. It is a comprehensive module that makes it easy to add jobs to the queue
+and process the jobs using the same library.
 - [MongoDB](https://github.com/mongodb/mongo) a NoSQL database that will be used to store job outputs.
-- [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables.
+- [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables in a `.env` file;
+it allows for easy customization of a local development environment, e.g. changing the MongoDB or beanstalkd endpoint.
 - [Mongo Express](https://github.com/mongo-express/mongo-express) provides a web-based visualization and administrative dashboard for MongoDB.
-- [Beanstalk console](https://github.com/ptrofimov/beanstalk_console) shows stats about the beanstalk queue.
+Both the API payload that created the job and the job's output are shown.
+- [Beanstalk console](https://github.com/ptrofimov/beanstalk_console) shows stats about the beanstalk queue, including the number of jobs currently being
+worked on.
 
 ## Flow
 ![diagram](./assets/edge-demo.png)
@@ -179,7 +183,8 @@ Completed jobs can be viewed in Mongo Express at [manager.edge-demo.site:8081](h
 
 ![mongo-express](./assets/mongo-express-screenshot.png)
 
-Numbers related to in-process jobs (numbers ready, delayed, total, etc.) can be viewed in Beanstalk console at [manager.edge-demo.site:8082](http://manager.edge-demo.site:8082). Note that if the queue
+Numbers related to in-process jobs (numbers ready, delayed, total, etc.) can be viewed in Beanstalk console at
+[manager.edge-demo.site:8082](http://manager.edge-demo.site:8082). Note that if the queue
 is full, the number of `current-jobs-reserved` is equal to the number of worker processes.
 
 *Note: It may be necessary to refresh the page after loading Beanstalk console.*
