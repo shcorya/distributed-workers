@@ -79,13 +79,13 @@ curl localhost:8080/1/
 ```
 
 ## Deployment
-Easy scaling can be used in a production environment with Docker Swarm. In ordr to use Docker Swawm effectively, at least three Linux servers are required.
-These can be either virtual or dedicated, and various Linux distributions can be used. Alias records should be pointed to each of the servers, and local hostnames
+Easy scaling can be achieved in a production environment with Docker Swarm. In order to use Docker Swawm effectively, at least two Linux servers are required. This setup will use three servers.
+These servers can be either virtual or dedicated, and various Linux distributions can be used. Unique alias records should point to each of the servers, and the servers' local hostnames
 should match these DNS entries.
 
-*Note: The local setup described above does not include disk persistence. This is deliberate for the sake of easy debugging. The below setup includes disk persistence for both in-queue and completed jobs.*
+*Note: The local setup described above does not include disk persistence. This is deliberate for the sake of easy debugging, because data is cleared whenever the database and/or queue container is stopped. The below setup includes disk persistence for both in-queue and completed jobs.*
 
-### Serer Setup
+### Server Setup
 Docker Swarm distinguishes two types of servers: managers and workers. This nomenclature should not be confused with the usage of "managers" and "workers" in this project, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
 project add jobs to the queue. Managers in a Docker Swarm are also workers, that is, in addition to controlling the state, they can also run user-defined processes.
 
