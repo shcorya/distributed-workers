@@ -14,26 +14,24 @@ Docker Swarm provides an easy-to-use means of deploying highly available applica
 Docker Compose files are used to deploy collections of services called "stacks".
 
 ## Utilites
-- [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management to deploy distributed applications. It allows for easy horizontal scaling
-with the addition of compute hardware as well as easy scaling for the number of `worker.mjs` processes.
+- [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management tool to deploy distributed applications. It allows for easy horizontal scaling
+by the addition of compute hardware as well as a means to increase the number of `worker.mjs` processes running.
 - [beanstalkd](https://beanstalkd.github.io/) is a job/worker queue.
-- [jackd](https://github.com/divmgl/jackd) is a beanstalk client that supports Node.JS. It is a comprehensive module that makes it easy to add jobs to the queue
+- [jackd](https://github.com/divmgl/jackd) is a beanstalkd client that supports Node.JS. It is a comprehensive module that makes it easy to add jobs to the queue
 and process the jobs using the same library.
-- [MongoDB](https://github.com/mongodb/mongo) a NoSQL database that will be used to store job outputs.
+- [MongoDB](https://github.com/mongodb/mongo) is a NoSQL database that will be used to store job outputs.
 - [dotenv](https://github.com/motdotla/dotenv) allows the use of persistent environment variables in a `.env` file;
 it allows for easy customization of a local development environment, e.g. changing the MongoDB or beanstalkd endpoint.
-- [Mongo Express](https://github.com/mongo-express/mongo-express) provides a web-based visualization and administrative dashboard for MongoDB.
-Both the API payload that created the job and the job's output are shown.
-- [Beanstalk console](https://github.com/ptrofimov/beanstalk_console) shows stats about the beanstalk queue, including the number of jobs currently being
-worked on.
+- [Mongo Express](https://github.com/mongo-express/mongo-express) provides a web-based visualization and administrative dashboard for MongoDB, and it provides a graphical means to check for completed jobs.
+- [Beanstalk console](https://github.com/ptrofimov/beanstalk_console) shows stats about the beanstalkd queue, including the number of jobs in progress.
 
 ## Flow
 ![diagram](./assets/edge-demo.png)
 
 ## API
-- `POST` -> sending a post request to any endpoint with properly formed JSON as payload will add a job to the queue
+- `POST` -> sending a `POST` request to any endpoint with properly formed JSON as its payload will add a job to the queue
   - e.g. `curl -X POST localhost:8080 -H "Content-Type: application/json" --data '{"example":"data"}'`
-- `GET` -> sending a get request with the job's ID in its URL will return the status of the job
+- `GET` -> sending a `GET` request with the job's ID in its URL will return the status of the job
   - e.g. `curl -X GET localhost:8080/1/` will return the status of job `1`
 
 ## Local Setup
