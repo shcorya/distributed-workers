@@ -1,3 +1,9 @@
+/*
+    The connection logic in this file is shared between manager.mjs
+      and worker.mjs; however, the connections themselves are not
+      shared. Each process opens its own connections.
+*/
+
 import Jackd from "jackd";
 import { MongoClient } from "mongodb";
 
