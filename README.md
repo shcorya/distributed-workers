@@ -160,7 +160,7 @@ Note that the number of worker processes can be easily adjusted by editing `dock
       <<: *connections
     deploy:
       mode: replicated
-      replicas: 3 # <- adjust this to scale the number of workers
+      replicas: 3 # adjust this to scale the number of workers
 ```
 
 Deploy the stack:
