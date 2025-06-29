@@ -1,11 +1,13 @@
 # An Example Distributed System
 This project implements a distributed, horizontally scalable distributed system.
-Users can send jobs to a RESTful API (implemented by the HTTP in `manager.mjs`), and these jobs are inturn run on one or more workers (implemented in `worker.mjs`).
-For demonstration purposes, the worker simply hashes the job's JSON payload and stores it in MongoDB, representing a completed job.
-The manager and worker processes communicate indirectly through beanstalkd.
+Users can send jobs to a RESTful API (implemented over HTTP in `manager.mjs`), and these jobs are inturn run on one or more workers (implemented in `worker.mjs`).
+For demonstration purposes, the worker simply hashes the job's JSON payload from an HTTP `POST` and stores it in MongoDB, representing a completed job. The unaltered payload is also stored in MongoDB.
+The `manager.mjs` and `worker.mjs` modeule run as seperate processes and communicate indirectly through a beanstalkd queue.
 
 When pulling the status of a job from a `GET` request, `manager.mjs` will first check beanstalkd for the jobs status. If the job is not found in the queue,
 `manager.mjs` will then check MongoDB for a completed job, and it will return an appropriate HTTP code and message depending on the job's presence in the database.
+
+`index.js` is used to launch either `manager.mjs` or `worker.mjs`, depending on CLI arguments. This allows for a simplified `Dockerfile` and a simplified `docker-compose.yml`.
 
 The system can be deployed on Docker Swarm to provide an easy, straightforward means of spawning additional worker processes.
 Docker Swarm provides an easy-to-use means of deploying highly available applications;
