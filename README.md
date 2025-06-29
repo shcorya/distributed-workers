@@ -97,7 +97,7 @@ curl -s https://get.docker.com | bash
 ```
 
 #### Manager Node
-In our setup, the Docker Swarm manager will be the only stateful node. It will be used to coordinate the swarm workers in addition to holding both the beastalkd
+In our setup, the Docker Swarm manager will be the only stateful node. It will be used to coordinate the swarm workers in addition to holding both the beanstalkd
 queue and MongoDB data.
 
 One the manager node, initalize the swarm:
@@ -115,6 +115,8 @@ To add a worker to this swarm, run the following command:
 
 To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```
+
+*Note: `172.17.0.2:2377` is an example IP address; it will vary.*
 
 #### Worker Nodes
 The output of `docker swarm init` provides rudimentary instructions on joining a worker to the swarm; run this command on each worker to populate the swarm:
