@@ -149,7 +149,7 @@ Still on the manager node, download the Docker Compose file:
 curl -s https://raw.githubusercontent.com/shcorya/distributed-workers/refs/heads/master/docker-compose.yml > docker-compose.yml
 ```
 
-Note that the number of worker processes can be easily adjusted. The default is three.
+Note that the number of worker processes can be easily adjusted by editing `docker-compose.yml`. The default is three.
 ```yaml
   worker:
     image: scorya/distributed-workers:development
