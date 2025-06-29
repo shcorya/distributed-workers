@@ -7,3 +7,7 @@ npm-debug.log
 *.txt
 *.md
 LICENSE
+docker-compose.yml
+assets
+test.sh
+.github*
