@@ -128,7 +128,7 @@ More information about [initializing a swarm](https://docs.docker.com/reference/
 [joining nodes](https://docs.docker.com/reference/cli/docker/swarm/join/) can be found in the official documentation.
 
 ### Controlling the Swarm
-Managemnt of a Docker Swarm must (naturally) occur on a manager node, so log back in to the manager via SSH.
+Managemnt of a Docker Swarm must (naturally) occur on a manager node, so log back into the manager via SSH.
 
 To check the setup of the swarm, run:
 ```bash
