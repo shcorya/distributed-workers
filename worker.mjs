@@ -1,5 +1,12 @@
 "use strict";
 
+/*
+    This file defines the worker module. For demonstration/example
+      purposes, it simply hashes the JSON payload of the jobs
+      from the queue. It uses a `while` loop to run continuously
+      whether or not there are any jobs in the queue.
+*/
+
 // load .env file into process.env
 import "dotenv/config";
 
