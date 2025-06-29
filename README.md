@@ -86,9 +86,8 @@ should match these DNS entries.
 *Note: The local setup described above does not include disk persistence. This is deliberate for the sake of easy debugging. The below setup includes disk persistence for both in-queue and completed jobs.*
 
 ### Serer Setup
-Docker Swarm distinguishes two types of servers: managers and workers. This nomenclature should not be confused with the usage of "managers" and "workers"
-used in this project, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
-project add jobs to the queue. Managers in a Docker Swarm are also workers.
+Docker Swarm distinguishes two types of servers: managers and workers. This nomenclature should not be confused with the usage of "managers" and "workers" in this project, although they are conceptually similar. Docker Swarm's managers are responsible for controlling the state of the swarm; managers in this
+project add jobs to the queue. Managers in a Docker Swarm are also workers, that is, in addition to controlling the state, they can also run user-defined processes.
 
 For this demo, we will use a single manager and two workers: `manager.edge-demo.site`, `worker-1.edge-demo.site` and `worker-2.edge-demo.site`. These nodes can be Edge Compute units.
  
