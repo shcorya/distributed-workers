@@ -202,13 +202,13 @@ Adding Docker Swarm managers is simple and would provide highly available manage
 ### Security
 Inter-process communication is encrypted within Docker Swarm; however, for the sake of simplicity, API requests and visualizers are accessed through unencrypted HTTP.
 This limitation can be addressed by using [Caddy](https://github.com/caddyserver/caddy) as a reverse proxy, running all currently unencrypted communications through HTTPS.
-Caddy could also be used to require authentication for API calls that create jobs.
+Caddy could also be used to require authentication for API calls that create jobs and/or retieve their status.
 
 Caddy automatically gets SSL certificates, and these can be stored in a highly available MongDB/HAProxy setup using a custom compilation of Caddy with [this plugin](https://github.com/root-sector/caddy-storage-mongodb).
 Running Caddy as a reverse proxy would require setting additional DNS records, among other things, thus it is omitted for simplicity.
 
 ### Beanstalk vs. Bull vs. BullMQ
-Bull does not provide a means of separating worker processes as its own module; worker processes must be called from the processes that enqueues the jobs, therefore the processes cannot be completely segregated.
+Bull does not provide a straightforward means of separating worker processes into their own modules; worker processes are generally called from the processes that enqueues the jobs, therefore the processes cannot be easily segregated.
 BullMQ addresses this limitation, but both Bull and BullMQ are backed by redis. 
 
 While redis is well-tested and reliable, strongly-consistent, highly-available redis implementations are limited.
@@ -217,7 +217,7 @@ Re-implementing every facet of redis used by Bull and BullMQ would be impractica
 Conversely, beanstalk is a simple protocol created specifically for queues. It has been implemented in different languages, and at least one ([Coolbeans](https://github.com/1xyz/coolbeans)) uses RAFT for high availability.
 
 ### NoSQL vs SQL
-Since the worker module returns a JSON object, it can be more easily stored in MongoDB than a SQL database. The ID of the beanstalk job as well as the _id of each MongoDB objects are both native JavaScript integers.
+Since the worker module returns a JSON object, it can be more easily stored in MongoDB than a SQL database. The ID of the beanstalk job as well as the _id of each MongoDB objects are both native JavaScript integers, reducing programming complexity.
 
 ## Next Steps
 1. Fix Master Branch CI/CD
