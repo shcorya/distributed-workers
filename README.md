@@ -30,9 +30,19 @@ it allows for easy customization of a local development environment, e.g. changi
 
 ## API
 - `POST` -> sending a `POST` request to any endpoint with properly formed JSON as its payload will add a job to the queue
-  - e.g. `curl -X POST localhost:8080 -H "Content-Type: application/json" --data '{"example":"data"}'`
+  - e.g. `curl -X POST manager.edge-demo.site:8080 -H "Content-Type: application/json" --data '{"example":"data"}'`
 - `GET` -> sending a `GET` request with the job's ID in its URL will return the status of the job
-  - e.g. `curl -X GET localhost:8080/1/` will return the status of job `1`
+  - e.g. `curl -X GET manager.edge-demo.site:8080/1/` will return the status of job `1`
+
+If the job is waiting in the queue or in progress, the response to the GET request will reflect the details from beanstalkd, e.g.:
+```json
+{"id":1,"tube":"default","state":"reserved","pri":0,"age":0,"delay":0,"ttr":60,"timeLeft":59,"file":0,"reserves":1,"timeouts":0,"releases":0,"buries":0,"kicks":0}
+```
+
+If the job is complete, the response will be fetched from MongoDB, e.g.:
+```json
+{"_id":1,"hash":"09ee943c4fa33cd5a355eb7a4e38f7ef","payload":"{\"example\":\"data\"}"}
+```
 
 ## Local Setup
 A local setup for development or testing purposes can be created with Docker. Two containers (one for beanstalkd and one for MongoDB) can be run on a local machine.
@@ -66,16 +76,6 @@ curl -X POST localhost:8080 -H "Content-Type: application/json" --data '{"exampl
 After sending an example job with cURL, the job's ID will be printed to the console. This ID can then be used to query the job's status:
 ```bash
 curl localhost:8080/1/
-```
-
-If the job is waiting in the queue or in progress, the response to the GET request will reflect the details from beanstalkd, e.g.:
-```json
-{"id":1,"tube":"default","state":"reserved","pri":0,"age":0,"delay":0,"ttr":60,"timeLeft":59,"file":0,"reserves":1,"timeouts":0,"releases":0,"buries":0,"kicks":0}
-```
-
-If the job is complete, the response will be fetched from MongoDB, e.g.:
-```json
-{"_id":1,"hash":"09ee943c4fa33cd5a355eb7a4e38f7ef","payload":"{\"example\":\"data\"}"}
 ```
 
 ## Deployment
