@@ -7,7 +7,7 @@ The `manager.mjs` and `worker.mjs` modeule run as seperate processes and communi
 When pulling the status of a job from a `GET` request, `manager.mjs` will first check beanstalkd for the jobs status. If the job is not found in the queue,
 `manager.mjs` will then check MongoDB for a completed job, and it will return an appropriate HTTP code and message depending on the job's presence in the database.
 
-`index.js` is used to launch either `manager.mjs` or `worker.mjs`, depending on CLI arguments. This allows for a simplified `Dockerfile` and a simplified `docker-compose.yml`.
+`index.js` is used to launch either `manager.mjs` or `worker.mjs`, depending on CLI arguments. This allows for a simplified `Dockerfile` and a simplified `docker-compose.yml`. `connections.mjs` contains the logic required to connect to beanstalkd and MongoDB. The logic is shared by both `manager.mjs` and `worker.mjs`, but the connections themselves are not. Each process opens its own connections.
 
 The system can be deployed on Docker Swarm to provide an easy, straightforward means of spawning additional worker processes.
 Docker Swarm provides an easy-to-use means of deploying highly available applications;
