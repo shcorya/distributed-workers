@@ -34,7 +34,7 @@ it allows for easy customization of a local development environment, e.g. changi
 - `GET` -> sending a `GET` request with the job's ID in its URL will return the status of the job
   - e.g. `curl -X GET manager.edge-demo.site:8080/1/` will return the status of job `1`
 
-If the job is waiting in the queue or in progress, the response to the GET request will reflect the details from beanstalkd, e.g.:
+If the job is waiting in the queue or in progress, the response to the `GET` request will reflect the details from beanstalkd, e.g.:
 ```json
 {"id":1,"tube":"default","state":"reserved","pri":0,"age":0,"delay":0,"ttr":60,"timeLeft":59,"file":0,"reserves":1,"timeouts":0,"releases":0,"buries":0,"kicks":0}
 ```
