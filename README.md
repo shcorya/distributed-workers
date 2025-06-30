@@ -60,12 +60,12 @@ docker run -it --rm -p 127.0.0.1:27017:27017 mongo
 
 Start the manager:
 ```bash
-node manager.mjs
+node src/manager.mjs
 ```
 
 Start one or more workers:
 ```bash
-node worker.mjs
+node src/worker.mjs
 ```
 
 Send an example job:
