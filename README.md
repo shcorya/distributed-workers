@@ -48,6 +48,8 @@ If the job is complete, the response will be fetched from MongoDB, e.g.:
 A local setup for development or testing purposes can be created with Docker. Two containers (one for beanstalkd and one for MongoDB) can be run on a local machine.
 Each of the below commands can be run in its own terminal tab/window for the sake of ease. Basic scaling can be achieved by running more than one worker process.
 
+![demo](./assets/demo.svg)
+
 To run beanstalkd:
 ```bash
 docker run -it --rm -p 127.0.0.1:11300:11300 rayyounghong/beanstalkd -V
