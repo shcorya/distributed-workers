@@ -13,6 +13,16 @@ The system can be deployed on Docker Swarm to provide an easy, straightforward m
 Docker Swarm provides an easy-to-use means of deploying highly available applications;
 Docker Compose files are used to deploy collections of services called "stacks".
 
+## Public Demo
+A hosted instance is available to the public at http://manager.edge-demo.site:8080. Jobs can be added to the queue at this endpoint.
+```bash
+curl -X POST manager.edge-demo.site:8080 -H "Content-Type: application/json" --data '{"example":"data"}'
+```
+The `curl -X POST` command will return a job ID. The status of the job can be queried with a `GET` request with this ID as its path, for example:
+```bash
+curl manager.edge-demo.site:8080/1/
+```
+
 ## Utilites
 - [Docker Swarm](https://github.com/dockerd/swarm) is a simple cluster management tool to deploy distributed applications. It allows for easy horizontal scaling
 by the addition of compute hardware as well as a means to increase the number of `worker.mjs` processes running.
